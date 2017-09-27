@@ -24,8 +24,11 @@ io.on('connection', (socket) => {
     socket.emit('newMessage', generateMessage('admin', "Welcome to the chat"));
     socket.broadcast.emit('newMessage', generateMessage('admin', "There's a new user in the chat"));
 
-    socket.on('createMessage', (message) => {
+    socket.on('createMessage', (message, callback) => {
         io.emit('newMessage', generateMessage(message.from, message.text));
+        callback({
+            reply:'Yoalsdkmfdsdalkma'
+        });
     });
 });
 

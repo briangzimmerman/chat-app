@@ -1,6 +1,16 @@
 var socket = io();
 socket.on('connect', function(){
     console.log('connected to server');
+    // socket.emit(
+    //     'createMessage',
+    //     {
+    //         from: 'Frankie',
+    //         text: "asdljfnsdf"
+    //     },
+    //     function(data) { 
+    //         console.log(data.reply);
+    //     }
+    // );
 });
 
 socket.on('disconnect', function(){
@@ -8,5 +18,22 @@ socket.on('disconnect', function(){
 });
 
 socket.on('newMessage', function(message){
-    console.log(message);
+    var li = jQuery('<li></li>');
+    li.text(`${message.from}: ${message.text}`);
+
+    jQuery('#messages').append(li);
+});
+
+jQuery('#message-form').on('submit', function(event) {
+    event.preventDefault();
+    socket.emit(
+        'createMessage',
+        {
+            from: "Jimmy",
+            text: jQuery('[name=message').val()
+        },
+        function(data) {
+            return;
+        }
+    );
 });
