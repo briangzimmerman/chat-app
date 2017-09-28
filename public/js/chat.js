@@ -60,7 +60,7 @@ socket.on('newLocationMessage', function(message) {
     var html = Mustache.render(template, {
         url: message.url,
         from: message.from,
-        createdAt: message.createdAt
+        createdAt: formattedTime
     });
     
     $('#messages').append(html);
