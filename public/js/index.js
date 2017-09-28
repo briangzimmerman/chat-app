@@ -1,16 +1,6 @@
 var socket = io();
 socket.on('connect', function(){
     console.log('connected to server');
-    // socket.emit(
-    //     'createMessage',
-    //     {
-    //         from: 'Frankie',
-    //         text: "asdljfnsdf"
-    //     },
-    //     function(data) { 
-    //         console.log(data.reply);
-    //     }
-    // );
 });
 
 socket.on('disconnect', function(){
@@ -44,14 +34,15 @@ socket.on('newLocationMessage', function(message) {
 
 $('#message-form').on('submit', function(event) {
     event.preventDefault();
+    var messageBox = $('[name=message]');
     socket.emit(
         'createMessage',
         {
             from: "Jimmy",
-            text: jQuery('[name=message').val()
+            text: messageBox.val()
         },
         function(data) {
-            return;
+            messageBox.val('');
         }
     );
 });
@@ -61,15 +52,21 @@ locationButton.click(function(event) {
     if(!('geolocation' in navigator)) {
         alert('Geolocation not supported by your browser');
     } else {
+        locationButton.attr('disabled', 'disabled');
+        locationButton.text('Sending Location...');
         navigator.geolocation.getCurrentPosition(
             function(position) {
                 socket.emit('createLocationMessage', {
                     lng: position.coords.longitude,
                     lat: position.coords.latitude
                 });
+                locationButton.removeAttr('disabled');
+                locationButton.text('Send Location');
             },
             function() {
-                alert('Unable to fetch location');
+                locationButton.removeAttr('disabled');
+                locationButton.text('Send Location');                
+                alert('Unable to find location');                       
             }
         );
     }
