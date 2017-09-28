@@ -9,7 +9,8 @@ socket.on('disconnect', function(){
 
 socket.on('newMessage', function(message){
     var li = $('<li></li>');
-    li.text(`${message.from}: ${message.text}`);
+    var formattedTime = moment(message.createdAt).format('LT');
+    li.text(`${message.from} ${formattedTime}: ${message.text}`);
 
     $('#messages').append(li);
 
@@ -19,9 +20,10 @@ socket.on('newMessage', function(message){
 socket.on('newLocationMessage', function(message) {
     var li = $('<li></li>');
     var a = $(`<a target='_blank'>My Location</a>`);
+    var formattedTime = moment(message.createdAt).format('LT');
 
     a.attr('href', message.url)
-    li.text(`${message.from}: `);
+    li.text(`${message.from} ${formattedTime}: `);
 
     li.append(a);
     $('#messages').append(li);
